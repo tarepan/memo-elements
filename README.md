@@ -3,9 +3,13 @@
 Collection of HTML Elements which provide idea/inspiration memo.  
 With WebComponents technology, you can acquire memo widgets rapidly (minimum Two line of code!).
 
+![demo_gif][]
+
+[demo_gif]: ./docs/demo_0.0.1.gif
+
 ## Demo
 
-Check [Demo page][pages]!!
+Check [Live Demo][pages]!!
 
 [pages]: https://tarepan.github.io/memo-elements/
 
