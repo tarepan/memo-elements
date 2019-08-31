@@ -17,6 +17,12 @@
     "type": "git",
     "url": "git+https://github.com/tarepan/memo-elements.git"
   },
+  "keywords": [
+    "memo",
+    "widget",
+    "webcomponents",
+    "lit-element"
+  ],
   "author": "tarepan",
   "license": "ISC",
   "bugs": {
