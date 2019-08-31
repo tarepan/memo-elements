@@ -29,3 +29,14 @@ In your HTML file,
 ```
 
 That's all!!
+
+## Future dev.
+
+### list length
+
+tech.
+
+- card scrolling
+- Overflow menu
+
+Currently, both are not implemented in MDC-Web.
