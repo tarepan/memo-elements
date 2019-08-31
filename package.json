@@ -1,7 +1,7 @@
 {
-  "name": "tempweb",
+  "name": "memo-elements",
   "version": "0.0.1",
-  "description": "Template for Web Development",
+  "description": "Memo Widgets with HTML Elements / Web Components",
   "main": "dist/main.js",
   "files": [
     "dist"
@@ -9,19 +9,20 @@
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "webpack",
+    "build-watch": "webpack --watch",
     "prepublishOnly": "npm run build",
     "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tarepan/tempWeb.git"
+    "url": "git+https://github.com/tarepan/memo-elements.git"
   },
   "author": "tarepan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tarepan/tempWeb/issues"
+    "url": "https://github.com/tarepan/memo-elements/issues"
   },
-  "homepage": "https://github.com/tarepan/tempWeb#readme",
+  "homepage": "https://github.com/tarepan/memo-elements#readme",
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.2",
@@ -31,7 +32,6 @@
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-jest": "^22.15.2",
     "eslint-plugin-prettier": "^3.1.0",
-    "html-webpack-plugin": "^3.2.0",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",
@@ -42,6 +42,8 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
+    "fp-ts": "^2.0.5",
+    "lit-element": "^2.2.1",
     "lit-html": "^1.1.2"
   }
 }
