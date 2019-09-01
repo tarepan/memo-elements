@@ -54,18 +54,17 @@ const list = (
     </ul>
   `;
 
-const MCDWebURL =
-  "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css";
-const fontEn = "https://fonts.googleapis.com/css?family=Roboto:300,400,500";
-const MDCWebCSS = (): TemplateResult =>
-  html`
-    <link href=${MCDWebURL} rel="stylesheet" />
-  `;
-
-const MDCIconCSS = (): TemplateResult =>
+const CSS = (): TemplateResult =>
   html`
     <style>
+      @import url("https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css");
       @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+      /* Currently overided by MDC-web, so needs MDC-web customization flow. */
+      @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP|Roboto&display=swap");
+      div {
+        /* Roboto do NOT contain JP => JP is "NotoSansJP" */
+        font-family: "Roboto", "Noto Sans JP", sans-serif;
+      }
     </style>
   `;
 
@@ -112,16 +111,7 @@ export class MemoWidget extends LitElement {
   }
   render(): TemplateResult {
     return html`
-      ${MDCWebCSS()}
-      <style>
-        /* Currently overided by MDC-web, so needs MDC-web customization flow. */
-        @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP|Roboto&display=swap");
-        div {
-          /* Roboto do NOT contain JP => JP is "NotoSansJP" */
-          font-family: "Roboto", "Noto Sans JP", sans-serif;
-        }
-      </style>
-      ${MDCIconCSS()}
+      ${CSS()}
       <div class="mdc-card">
         <mwc-textfield
           label="> Your Idea"
@@ -134,7 +124,7 @@ export class MemoWidget extends LitElement {
   /**
    * Idea storage initiation through attribute initialization (this occur after class construction)
    */
-  attributeChangedCallback(name: any, oldval: any, newval: any): void {
+  attributeChangedCallback(name: string, oldval: string, newval: string): void {
     if (this.storageInited == false && name == "storageid") {
       this.initStorage(newval);
     }
