@@ -7,6 +7,8 @@ import {
 } from "lit-element";
 import { EntityListStorage } from "./IdeaStorage";
 
+import "@material/mwc-textfield";
+
 /**
  * Interface for idea storage.
  * Implimentation can use localStorage, indexDB, web service, any thing.
@@ -50,23 +52,6 @@ const list = (
     <ul class="mdc-list">
       ${contentList.map((content, i) => listItem(content, i, deleteHandler))}
     </ul>
-  `;
-
-// Input
-// design system: Material Design
-// input: one line text input
-const input = (label: string, enterHandler: Function): TemplateResult =>
-  html`
-    <div class="mdc-text-field">
-      <input
-        type="text"
-        id="my-text-field"
-        class="mdc-text-field__input"
-        @change=${enterHandler}
-      />
-      <label class="mdc-floating-label" for="my-text-field">${label}</label>
-      <div class="mdc-line-ripple"></div>
-    </div>
   `;
 
 const MCDWebURL =
@@ -138,7 +123,10 @@ export class MemoWidget extends LitElement {
       </style>
       ${MDCIconCSS()}
       <div class="mdc-card">
-        ${input("> Your Idea", this.appendItem.bind(this))}
+        <mwc-textfield
+          label="> Your Idea"
+          @change=${this.appendItem.bind(this)}
+        ></mwc-textfield>
         ${list(this.ideaList, this.deleteItem.bind(this))}
       </div>
     `;
