@@ -1,5 +1,5 @@
 import { pipe } from "fp-ts/lib/pipeable";
-import { IdeaStorage } from "./idea-inbox";
+import { IdeaStorage, Item } from "./idea-inbox";
 
 /**
  * Local Storage Wrapper, which hold entity list in single key
@@ -15,29 +15,55 @@ export class EntityListStorage implements IdeaStorage {
     this.storage = localStorage;
   }
   /**
+   * Read localStorage as Map Object
+   */
+  private readMap(): Map<string, Item> {
+    const storage = this.storage;
+    return pipe(
+      storage.getItem(this.id),
+      stg => (stg ? stg : "[]"),
+      JSON.parse,
+      entries => entries as [string, Item][],
+      entries => new Map(entries)
+    );
+  }
+  /**
+   * Replace localStorage with input Map
+   */
+  private writeMap(map: Map<string, Item>): void {
+    const storage = this.storage;
+    pipe(
+      map.entries(),
+      Array.from,
+      JSON.stringify,
+      stg => storage.setItem(this.id, stg)
+    );
+  }
+  /**
    * Read a full entity list
    */
-  read(): string[] {
-    const listStg = this.storage.getItem(this.id);
-    return listStg !== null ? JSON.parse(listStg) : [];
+  read(): Item[] {
+    return Array.from(this.readMap().values()).reverse();
   }
   /**
    * Create a record
    * @param idea - added idea
    */
-  create(idea: string): void {
+  create(idea: Item): void {
     pipe(
-      this.read(),
-      ary => [idea, ...ary],
-      JSON.stringify,
-      ideaStg => this.storage.setItem(this.id, ideaStg)
+      this.readMap(),
+      map => map.set(idea.id, idea),
+      this.writeMap.bind(this)
     );
   }
-  /**
-   * Replace all entities
-   * @param ideaList - new full entity list
-   */
-  updateAll(ideaList: string[]): void {
-    this.storage.setItem(this.id, JSON.stringify(ideaList));
+  delete(itemID: string): void {
+    pipe(
+      this.readMap(),
+      map => {
+        map.delete(itemID);
+        return map;
+      },
+      this.writeMap.bind(this)
+    );
   }
 }
