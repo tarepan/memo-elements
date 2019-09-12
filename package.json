@@ -1,6 +1,6 @@
 {
   "name": "memo-elements",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Memo Widgets with HTML Elements / Web Components",
   "main": "dist/main.js",
   "files": [
