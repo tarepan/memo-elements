@@ -6,27 +6,32 @@ import {
   TemplateResult
 } from "lit-element";
 import { EntityListStorage } from "./IdeaStorage";
-
 import "@material/mwc-textfield";
+const uuidv4 = require("uuid/v4");
+
+export interface Item {
+  id: string;
+  content: string;
+}
 
 /**
  * Interface for idea storage.
  * Implimentation can use localStorage, indexDB, web service, any thing.
  */
 export interface IdeaStorage {
-  create: (idea: string) => void;
-  read: () => string[];
-  updateAll: (ideas: string[]) => void;
+  create: (idea: Item) => void;
+  read: () => Item[];
+  delete: (ideaID: string) => void;
 }
 
-type deleteHandler = (index: number) => void;
+type deleteHandler = (itemID: string) => void;
 // List
 // design system: Material Design
 // 1line, delete icon, separated by line
 // <= Subject should identity whether this is "frequent <br>" or "list" (list should be list)
 const listItem = (
   content: string,
-  index: number,
+  itemID: string,
   deleteHandler: deleteHandler
 ): TemplateResult =>
   html`
@@ -34,7 +39,7 @@ const listItem = (
       <span class="mdc-list-item__text">${content}</span>
       <button
         class="mdc-list-item__meta mdc-icon-button material-icons"
-        @click=${(): void => deleteHandler(index)}
+        @click=${(): void => deleteHandler(itemID)}
       >
         <i class="mdc-icon-button__icon material-icons">
           cancel
@@ -44,13 +49,10 @@ const listItem = (
     <li role="separator" class="mdc-list-divider"></li>
   `;
 
-const list = (
-  contentList: string[],
-  deleteHandler: deleteHandler
-): TemplateResult =>
+const list = (items: Item[], deleteHandler: deleteHandler): TemplateResult =>
   html`
     <ul class="mdc-list">
-      ${contentList.map((content, i) => listItem(content, i, deleteHandler))}
+      ${items.map(item => listItem(item.content, item.id, deleteHandler))}
     </ul>
   `;
 
@@ -68,19 +70,10 @@ const CSS = (): TemplateResult =>
     </style>
   `;
 
-/**
- * Remove an item immutably in an array based on index
- * @param list - item list
- * @param index - removed index
- */
-function removeIndexedItem<T>(list: T[], index: number): T[] {
-  return [...list.slice(0, index), ...list.slice(index + 1, list.length)];
-}
-
 @customElement("memo-widget")
 export class MemoWidget extends LitElement {
   @property({ type: String }) storageID = "ideaInboxDefault";
-  @property({ type: Array }) ideaList = [""];
+  @property({ type: Array }) ideaList: Item[];
   private ideaStorage: IdeaStorage;
   private storageInited = false;
   constructor() {
@@ -110,12 +103,17 @@ export class MemoWidget extends LitElement {
     const inputTxt: string = evt.target.value;
     //@ts-ignore
     evt.target.value = "";
-    this.ideaList = [inputTxt, ...this.ideaList];
-    this.ideaStorage.create(inputTxt);
+    const newItem: Item = {
+      id: uuidv4() as string,
+      content: inputTxt
+    };
+    this.ideaList = [newItem, ...this.ideaList];
+    this.ideaStorage.create(newItem);
   }
-  deleteItem(index: number): void {
-    this.ideaList = removeIndexedItem(this.ideaList, index);
-    this.ideaStorage.updateAll(this.ideaList);
+  deleteItem(itemID: string): void {
+    // this.ideaStorage.
+    this.ideaStorage.delete(itemID);
+    this.ideaList = this.ideaStorage.read();
   }
   render(): TemplateResult {
     return html`
