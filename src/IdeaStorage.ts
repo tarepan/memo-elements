@@ -14,11 +14,15 @@ export class EntityListStorage implements IdeaStorage {
     this.id = id;
     this.storage = localStorage;
   }
+  /**
+   * Read a full entity list
+   */
   read(): string[] {
     const listStg = this.storage.getItem(this.id);
     return listStg !== null ? JSON.parse(listStg) : [];
   }
   /**
+   * Create a record
    * @param idea - added idea
    */
   create(idea: string): void {
@@ -29,6 +33,10 @@ export class EntityListStorage implements IdeaStorage {
       ideaStg => this.storage.setItem(this.id, ideaStg)
     );
   }
+  /**
+   * Replace all entities
+   * @param ideaList - new full entity list
+   */
   updateAll(ideaList: string[]): void {
     this.storage.setItem(this.id, JSON.stringify(ideaList));
   }
