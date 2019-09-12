@@ -95,6 +95,14 @@ export class MemoWidget extends LitElement {
       this.storageInited = true;
       console.log(`ID used for storage: ${id}`);
       this.ideaList = this.ideaStorage.read();
+      // regular update, which make multi-tab conflict problem #1 weaker
+      const xxx = 3000;
+      setInterval(
+        ((): void => {
+          this.ideaList = this.ideaStorage.read();
+        }).bind(this),
+        xxx
+      );
     }
   }
   appendItem(evt: Event): void {
