@@ -18,6 +18,7 @@ Check [Live Demo][pages]!!
 Current widgets are
 
 - memo-widget: persistent memo (item saved in browser)
+- memo-input-widget: input-only `<memo-widget>`
 
 ## How to Use
 
