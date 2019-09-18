@@ -19,6 +19,7 @@ Current widgets are
 
 - memo-widget: persistent memo (item saved in browser)
 - memo-input-widget: input-only `<memo-widget>`
+- memo-output-widget: output-only `<memo-output-widget>`
 
 ## How to Use
 

@@ -1,5 +1,6 @@
 import "./idea-inbox";
 import "./memo-input-widget";
+import "./memo-output-widget";
 
 // Material Icon Load.
 // This should be done in shadow DOM (idea-inbox-widget), but not work.
