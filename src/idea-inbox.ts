@@ -74,12 +74,14 @@ const CSS = (): TemplateResult =>
 export class MemoWidget extends LitElement {
   @property({ type: String }) storageID = "ideaInboxDefault";
   @property({ type: Array }) ideaList: Item[];
+  @property({ type: Number }) inboxCount = 0;
   private ideaStorage: IdeaStorage;
   private storageInited = false;
   constructor() {
     super();
     this.ideaStorage = new EntityListStorage(this.storageID);
     this.ideaList = this.ideaStorage.read();
+    this.inboxCount = this.ideaList.length;
   }
   initStorage(id: string): void {
     if (!this.storageInited) {
@@ -88,11 +90,13 @@ export class MemoWidget extends LitElement {
       this.storageInited = true;
       console.log(`ID used for storage: ${id}`);
       this.ideaList = this.ideaStorage.read();
+      this.inboxCount = this.ideaList.length;
       // regular update, which make multi-tab conflict problem #1 weaker
       const xxx = 3000;
       setInterval(
         ((): void => {
           this.ideaList = this.ideaStorage.read();
+          this.inboxCount = this.ideaList.length;
         }).bind(this),
         xxx
       );
@@ -109,11 +113,13 @@ export class MemoWidget extends LitElement {
     };
     this.ideaList = [newItem, ...this.ideaList];
     this.ideaStorage.create(newItem);
+    this.inboxCount = this.ideaList.length;
   }
   deleteItem(itemID: string): void {
     // this.ideaStorage.
     this.ideaStorage.delete(itemID);
     this.ideaList = this.ideaStorage.read();
+    this.inboxCount = this.ideaList.length;
   }
   render(): TemplateResult {
     return html`

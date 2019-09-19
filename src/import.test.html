@@ -27,7 +27,11 @@
     <br />
     <br />
     <p>Memo output only widget: ID test00003(same as above widgets)</p>
-    <memo-output-widget storageid="test00003"></memo-output-widget>
+    <memo-output-widget storageid="test00003" id="o1"></memo-output-widget>
     <script src="../dist/main.js"></script>
+    <script>
+      const out = document.querySelector("#o1");
+      setInterval(() => console.log(out.inboxCount), 1000);
+    </script>
   </body>
 </html>
