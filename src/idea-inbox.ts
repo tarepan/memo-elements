@@ -75,6 +75,7 @@ export class MemoWidget extends LitElement {
   @property({ type: String }) storageID = "ideaInboxDefault";
   @property({ type: Array }) ideaList: Item[];
   @property({ type: Number }) inboxCount = 0;
+  @property({ type: Boolean }) details = false;
   private ideaStorage: IdeaStorage;
   private storageInited = false;
   constructor() {
@@ -122,14 +123,23 @@ export class MemoWidget extends LitElement {
     this.inboxCount = this.ideaList.length;
   }
   render(): TemplateResult {
+    const itemList = list(this.ideaList, this.deleteItem.bind(this));
     return html`
       ${CSS()}
       <div class="mdc-card">
+        <slot name="about"></slot>
         <mwc-textfield
           label="> Your Idea"
           @change=${this.appendItem.bind(this)}
         ></mwc-textfield>
-        ${list(this.ideaList, this.deleteItem.bind(this))}
+        ${this.details
+          ? html`
+              <details>
+                <summary>items</summary>
+                ${itemList}
+              </details>
+            `
+          : itemList}
       </div>
     `;
   }
