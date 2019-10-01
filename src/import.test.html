@@ -28,6 +28,14 @@
     <br />
     <p>Memo output only widget: ID test00003(same as above widgets)</p>
     <memo-output-widget storageid="test00003" id="o1"></memo-output-widget>
+    <br />
+    <p>
+      Hidden (detailed) Memo output only widget: ID test00003(same as above
+      widgets)
+    </p>
+    <memo-output-widget storageid="test00003" id="o1" details>
+      <h3 slot="about">Treasure Box!</h3>
+    </memo-output-widget>
     <script src="../dist/main.js"></script>
     <script>
       const out = document.querySelector("#o1");

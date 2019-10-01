@@ -7,6 +7,7 @@ import {
 } from "lit-element";
 import { EntityListStorage } from "./IdeaStorage";
 import "@material/mwc-textfield";
+import { Template } from "lit-html";
 
 export interface Item {
   id: string;
@@ -74,6 +75,7 @@ export class MemoOutputWidget extends LitElement {
   @property({ type: String }) storageID = "ideaInboxDefault";
   @property({ type: Array }) ideaList: Item[];
   @property({ type: Number }) inboxCount = 0;
+  @property({ type: Boolean }) details = false;
   private ideaStorage: IdeaStorage;
   private storageInited = false;
   constructor() {
@@ -108,10 +110,19 @@ export class MemoOutputWidget extends LitElement {
     this.inboxCount = this.ideaList.length;
   }
   render(): TemplateResult {
+    const itemList = list(this.ideaList, this.deleteItem.bind(this));
     return html`
       ${CSS()}
       <div class="mdc-card">
-        ${list(this.ideaList, this.deleteItem.bind(this))}
+        <slot name="about"></slot>
+        ${this.details
+          ? html`
+              <details>
+                <summary>items</summary>
+                ${itemList}
+              </details>
+            `
+          : itemList}
       </div>
     `;
   }
